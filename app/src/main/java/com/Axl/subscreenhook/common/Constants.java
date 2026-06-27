@@ -9,7 +9,14 @@ public final class Constants {
     public static final String EXTRA_SETTING_KEY = "setting_key";
     public static final String EXTRA_SETTING_VALUE = "setting_value";
     public static final String KEY_DISABLE_LONG_PRESS_EDIT = "disable_long_press_edit";
+    public static final String KEY_REMOVE_WALLPAPER_LIMIT = "remove_wallpaper_limit";
     public static final String KEY_FLOATING_NAV_BAR = "floating_nav_bar";
+
+    // Theme store hook targets
+    public static final String THEME_STORE_PACKAGE = "com.android.thememanager";
+    public static final String THEME_REAR_VIEWMODEL_CLASS = "com.rearScreen.viewModel.RearScreenDetailViewModel";
+    public static final String THEME_REAR_TOOL_SERVICE_CLASS = "com.rearScreen.miclaw.RearScreenToolService";
+    public static final String THEME_APPLY_CHECK_METHOD = "o5";
 
     // Z1.t: old gesture class
     public static final String HOOK_CLASS = "Z1.t";

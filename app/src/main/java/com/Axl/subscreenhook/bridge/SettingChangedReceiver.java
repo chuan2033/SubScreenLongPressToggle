@@ -19,8 +19,12 @@ public class SettingChangedReceiver extends BroadcastReceiver {
             return;
         }
         if (intent.hasExtra(Constants.EXTRA_SETTING_VALUE)) {
-            boolean value = intent.getBooleanExtra(Constants.EXTRA_SETTING_VALUE, false);
-            PrefsBridge.applyIncomingSettingForUi(context, key, value);
+            Object value = intent.getExtras().get(Constants.EXTRA_SETTING_VALUE);
+            if (value instanceof Boolean) {
+                PrefsBridge.applyIncomingSettingForUi(context, key, (Boolean) value);
+            } else if (value instanceof Integer) {
+                PrefsBridge.applyIncomingSettingForUiInt(context, key, (Integer) value);
+            }
         }
     }
 }

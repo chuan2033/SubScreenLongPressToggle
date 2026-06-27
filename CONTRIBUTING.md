@@ -12,6 +12,7 @@
 - Put app and hook synchronization code under `bridge/`.
 - Keep UI files under `ui/` and split pages/components instead of growing a single screen file.
 - Avoid hard-coding package names or setting keys outside `Constants`.
+- Theme store hooks go in `installWallpaperLimitHook()` within `ModuleMain.java`.
 
 ## Validation
 
@@ -23,6 +24,7 @@ Run:
 
 If you change hook behavior, also re-verify on device that:
 
-- the LSPosed scope still points to `com.xiaomi.subscreencenter`
+- the LSPosed scope includes both `com.xiaomi.subscreencenter` and `com.android.thememanager`
 - the UI toggle state reaches the hook process
 - long-press behavior matches the current toggle value
+- wallpaper limit removal works when enabled

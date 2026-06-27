@@ -1,4 +1,4 @@
-﻿package com.Axl.subscreenhook.ui.theme
+package com.Axl.subscreenhook.ui.theme
 
 import androidx.compose.ui.unit.dp
 
@@ -14,7 +14,7 @@ object HomeUiTokens {
 
     val AboutHeaderTopPadding = 48.dp
     val AboutHeaderBottomPadding = 24.dp
-    val AboutLogoSize = 72.dp
+    val AboutLogoSize = 120.dp
     val AboutLogoCornerRadius = 18.dp
     val AboutHeaderSpacing = 16.dp
     val AboutVersionSpacing = 4.dp

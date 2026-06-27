@@ -29,25 +29,39 @@ public class ModuleMain extends XposedModule {
         log(Log.INFO, Constants.LOG_TAG, "onModuleLoaded: " + param.getProcessName());
     }
 
+    private volatile boolean themeStoreHooksInstalled = false;
+
     @Override
     public void onPackageReady(@NonNull PackageReadyParam param) {
-        if (!Constants.TARGET_PACKAGE.equals(param.getPackageName())) {
-            return;
-        }
-        if (hooksInstalled) {
-            return;
-        }
-        synchronized (this) {
-            if (hooksInstalled) {
-                return;
+        String packageName = param.getPackageName();
+
+        if (Constants.TARGET_PACKAGE.equals(packageName)) {
+            if (hooksInstalled) return;
+            synchronized (this) {
+                if (hooksInstalled) return;
+                try {
+                    installHookContextBootstrap(param.getClassLoader());
+                    installLongPressHooks(param.getClassLoader());
+                    hooksInstalled = true;
+                    log(Log.INFO, Constants.LOG_TAG, "Hooks installed for " + Constants.TARGET_PACKAGE);
+                } catch (Throwable throwable) {
+                    log(Log.ERROR, Constants.LOG_TAG, "Failed to install hooks", throwable);
+                }
             }
-            try {
-                installHookContextBootstrap(param.getClassLoader());
-                installLongPressHooks(param.getClassLoader());
-                hooksInstalled = true;
-                log(Log.INFO, Constants.LOG_TAG, "Hooks installed for " + Constants.TARGET_PACKAGE);
-            } catch (Throwable throwable) {
-                log(Log.ERROR, Constants.LOG_TAG, "Failed to install hooks", throwable);
+            return;
+        }
+
+        if (Constants.THEME_STORE_PACKAGE.equals(packageName)) {
+            if (themeStoreHooksInstalled) return;
+            synchronized (this) {
+                if (themeStoreHooksInstalled) return;
+                try {
+                    installWallpaperLimitHook(param.getClassLoader());
+                    themeStoreHooksInstalled = true;
+                    log(Log.INFO, Constants.LOG_TAG, "Theme store hooks installed");
+                } catch (Throwable throwable) {
+                    log(Log.ERROR, Constants.LOG_TAG, "Failed to install theme store hooks", throwable);
+                }
             }
         }
     }
@@ -90,6 +104,26 @@ public class ModuleMain extends XposedModule {
             hookLongPressMethod(legacyGestureClass, Constants.HOOK_METHOD_GATE, new Class[]{MotionEvent.class}, false);
             hookLongPressMethod(legacyGestureClass, Constants.HOOK_METHOD_RUN, new Class[]{}, null);
         }
+    }
+
+    private void installWallpaperLimitHook(@NonNull ClassLoader classLoader) {
+        Class<?> viewModelClass = findClass(Constants.THEME_REAR_VIEWMODEL_CLASS, classLoader);
+        if (viewModelClass == null) {
+            log(Log.WARN, Constants.LOG_TAG, "Theme hook target missing: " + Constants.THEME_REAR_VIEWMODEL_CLASS);
+            return;
+        }
+        hookMethodIfPresent(
+                viewModelClass,
+                Constants.THEME_APPLY_CHECK_METHOD,
+                new Class[]{java.util.List.class},
+                "RearScreenDetailViewModel#o5",
+                chain -> {
+                    if (PrefsBridge.shouldRemoveWallpaperLimit()) {
+                        return true;
+                    }
+                    return chain.proceed();
+                }
+        );
     }
 
     private void hookLongPressMethod(

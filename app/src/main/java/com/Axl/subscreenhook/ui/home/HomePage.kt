@@ -1,4 +1,4 @@
-﻿package com.Axl.subscreenhook.ui.home
+package com.Axl.subscreenhook.ui.home
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.Axl.subscreenhook.BuildConfig
-import com.Axl.subscreenhook.common.Constants
 import com.Axl.subscreenhook.ui.components.CardBlock
 import com.Axl.subscreenhook.ui.components.SettingsInfoRow
 import com.Axl.subscreenhook.ui.components.StatusCard
@@ -19,8 +18,12 @@ import top.yukonga.miuix.kmp.utils.PressFeedbackType
 @Composable
 internal fun HomePage(
     disableLongPress: Boolean,
+    removeWallpaperLimit: Boolean,
+    floatingNavBar: Boolean,
     serviceAvailable: Boolean,
-    onDisableLongPressChange: (Boolean) -> Unit
+    onDisableLongPressChange: (Boolean) -> Unit,
+    onRemoveWallpaperLimitChange: (Boolean) -> Unit,
+    onFloatingNavBarChange: (Boolean) -> Unit
 ) {
     StatusCard(
         serviceAvailable = serviceAvailable,
@@ -39,13 +42,33 @@ internal fun HomePage(
                 "当前恢复原厂长按行为"
             }
         )
+        SwitchPreference(
+            checked = removeWallpaperLimit,
+            onCheckedChange = onRemoveWallpaperLimitChange,
+            title = "去除背屏壁纸数量限制",
+            summary = if (removeWallpaperLimit) {
+                "已去除15张壁纸上限"
+            } else {
+                "当前保持默认15张上限"
+            }
+        )
     }
 
-    SmallTitle(text = "运行信息", insideMargin = PaddingValues(horizontal = HomeUiTokens.ListHorizontalPadding))
+    SmallTitle(text = "导航栏", insideMargin = PaddingValues(horizontal = HomeUiTokens.ListHorizontalPadding))
+    CardBlock(pressFeedbackType = PressFeedbackType.None) {
+        SwitchPreference(
+            checked = floatingNavBar,
+            onCheckedChange = onFloatingNavBarChange,
+            title = "悬浮底栏",
+            summary = if (floatingNavBar) "当前使用悬浮底栏" else "当前使用普通底栏"
+        )
+    }
+
+    SmallTitle(text = "当前配置", insideMargin = PaddingValues(horizontal = HomeUiTokens.ListHorizontalPadding))
     CardBlock {
-        SettingsInfoRow("目标包名", Constants.TARGET_PACKAGE)
-        SettingsInfoRow("模块包名", BuildConfig.APPLICATION_ID)
-        SettingsInfoRow("默认状态", "开启禁用长按")
+        SettingsInfoRow("长按禁用", if (disableLongPress) "开启" else "关闭")
+        SettingsInfoRow("壁纸限制", if (removeWallpaperLimit) "已去除" else "保持默认")
+        SettingsInfoRow("底栏样式", if (floatingNavBar) "悬浮底栏" else "普通底栏")
     }
 
     Spacer(modifier = Modifier.height(120.dp))

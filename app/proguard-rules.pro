@@ -1,25 +1,35 @@
 # ProGuard rules for SubScreenLongPressToggle
 
-# Xposed 模块入口 - 不混淆
--keep class cn.axlq.subscreenhook.hook.ModuleMain { *; }
+# Xposed module entry
+-keep class com.Axl.subscreenhook.hook.ModuleMain { *; }
 
-# Bridge 层 - 不混淆（UI 进程与 Hook 进程通信）
--keep class cn.axlq.subscreenhook.bridge.** { *; }
+# Bridge layer
+-keep class com.Axl.subscreenhook.bridge.** { *; }
 
-# Application - 不混淆
--keep class cn.axlq.subscreenhook.app.ModuleApp { *; }
+# Application
+-keep class com.Axl.subscreenhook.app.ModuleApp { *; }
 
-# Constants - 不混淆（Hook 点配置）
--keep class cn.axlq.subscreenhook.common.Constants { *; }
+# Constants
+-keep class com.Axl.subscreenhook.common.Constants { *; }
 
-# Xposed API (recommended for API 102)
+# Xposed API
 -dontwarn io.github.libxposed.annotation.**
 -adaptresourcefilecontents META-INF/xposed/java_init.list
 -keep,allowoptimization,allowobfuscation public class * extends io.github.libxposed.api.XposedModule {
     public <init>();
 }
 
-# Miuix Compose UI
+# Xposed Service
+-keep class io.github.libxposed.service.** { *; }
+-keep class io.github.libxposed.service.XposedServiceHelper$OnServiceListener { *; }
+-keep class io.github.libxposed.service.XposedServiceHelper { *; }
+-keep class io.github.libxposed.service.XposedService { *; }
+-keep class io.github.libxposed.service.XposedProvider { *; }
+-keep class io.github.libxposed.api.XposedInterface { *; }
+
+# Miuix
 -keep class top.yukonga.miuix.** { *; }
 -dontwarn top.yukonga.miuix.**
 
+# UI classes
+-keep class com.Axl.subscreenhook.ui.** { *; }

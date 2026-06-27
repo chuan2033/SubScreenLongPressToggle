@@ -22,10 +22,19 @@ android {
         buildConfigField "String", "MIUIX_VERSION", "\"0.9.2\""
     }
 
+    signingConfigs {
+        debug {
+            storeFile file(System.getenv('USERPROFILE') + '/.android/debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            minifyEnabled false
+            signingConfig signingConfigs.debug
         }
         debug {
             minifyEnabled false

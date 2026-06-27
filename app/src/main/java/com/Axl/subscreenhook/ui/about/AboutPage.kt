@@ -1,4 +1,4 @@
-﻿package com.Axl.subscreenhook.ui.about
+package com.Axl.subscreenhook.ui.about
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -89,10 +89,10 @@ private fun AboutHeader() {
             contentAlignment = Alignment.Center
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                painter = painterResource(id = R.drawable.ic_about_logo),
                 contentDescription = "App Icon",
                 modifier = Modifier.size(HomeUiTokens.AboutLogoSize),
-                contentScale = ContentScale.Fit
+                contentScale = ContentScale.Crop
             )
         }
         Spacer(modifier = Modifier.height(HomeUiTokens.AboutHeaderSpacing))

@@ -1,4 +1,4 @@
-﻿package com.Axl.subscreenhook.ui.components
+package com.Axl.subscreenhook.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -47,7 +47,7 @@ internal fun SettingsInfoRow(label: String, value: String) {
         Text(
             text = label,
             color = MiuixTheme.colorScheme.onSurfaceSecondary,
-            style = MiuixTheme.textStyles.body2,
+            style = MiuixTheme.textStyles.body1,
             modifier = Modifier.weight(1f)
         )
         Text(

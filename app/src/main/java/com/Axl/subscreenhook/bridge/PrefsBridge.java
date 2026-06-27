@@ -39,7 +39,8 @@ public final class PrefsBridge {
             return null;
         }
         try {
-            return local(context);
+            Context appContext = context.getApplicationContext();
+            return appContext.getSharedPreferences(Constants.PREF_GROUP, Context.MODE_PRIVATE);
         } catch (Throwable e) {
             Log.w(TAG, "Failed to get local prefs for hook", e);
             return null;
@@ -149,6 +150,20 @@ public final class PrefsBridge {
         }
     }
 
+    public static boolean shouldRemoveWallpaperLimit() {
+        ModuleMain module = ModuleMain.getRunningInstance();
+        if (module == null) return true;
+        try {
+            SharedPreferences remotePrefs = module.getRemotePreferences(Constants.PREF_GROUP);
+            if (remotePrefs != null) {
+                return remotePrefs.getBoolean(Constants.KEY_REMOVE_WALLPAPER_LIMIT, true);
+            }
+        } catch (Throwable e) {
+            Log.w(TAG, "Failed to read shouldRemoveWallpaperLimit", e);
+        }
+        return true;
+    }
+
     public static void applyIncomingSettingForUi(@NonNull Context context, @NonNull String key, boolean value) {
         try {
             local(context).edit().putBoolean(key, value).apply();
@@ -158,6 +173,18 @@ public final class PrefsBridge {
             }
         } catch (Throwable e) {
             Log.w(TAG, "Failed to apply incoming setting for UI: " + key, e);
+        }
+    }
+
+    public static void applyIncomingSettingForUiInt(@NonNull Context context, @NonNull String key, int value) {
+        try {
+            local(context).edit().putInt(key, value).apply();
+            SharedPreferences remotePrefs = remote();
+            if (remotePrefs != null) {
+                remotePrefs.edit().putInt(key, value).apply();
+            }
+        } catch (Throwable e) {
+            Log.w(TAG, "Failed to apply incoming setting for UI int: " + key, e);
         }
     }
 
@@ -176,11 +203,50 @@ public final class PrefsBridge {
         }
     }
 
+    public static void applyIncomingSettingForHookInt(@NonNull String key, int value) {
+        try {
+            SharedPreferences localPrefs = localForHook();
+            if (localPrefs != null) {
+                localPrefs.edit().putInt(key, value).apply();
+            }
+            SharedPreferences remotePrefs = remoteForHook();
+            if (remotePrefs != null) {
+                remotePrefs.edit().putInt(key, value).apply();
+            }
+        } catch (Throwable e) {
+            Log.w(TAG, "Failed to apply incoming setting for hook int: " + key, e);
+        }
+    }
+
     public static boolean readFloatingNavBar(@NonNull Context context) {
         return local(context).getBoolean(Constants.KEY_FLOATING_NAV_BAR, false);
     }
 
     public static void writeFloatingNavBar(@NonNull Context context, boolean floating) {
         local(context).edit().putBoolean(Constants.KEY_FLOATING_NAV_BAR, floating).apply();
+    }
+
+    public static boolean readRemoveWallpaperLimitForUi(@NonNull Context context) {
+        SharedPreferences remote = remote();
+        if (remote != null) {
+            boolean value = remote.getBoolean(Constants.KEY_REMOVE_WALLPAPER_LIMIT, true);
+            local(context).edit()
+                    .putBoolean(Constants.KEY_REMOVE_WALLPAPER_LIMIT, value)
+                    .apply();
+            return value;
+        }
+        return local(context).getBoolean(Constants.KEY_REMOVE_WALLPAPER_LIMIT, true);
+    }
+
+    public static void writeRemoveWallpaperLimitFromUi(@NonNull Context context, boolean enabled) {
+        local(context).edit()
+                .putBoolean(Constants.KEY_REMOVE_WALLPAPER_LIMIT, enabled)
+                .apply();
+        SharedPreferences remote = remote();
+        if (remote != null) {
+            remote.edit()
+                    .putBoolean(Constants.KEY_REMOVE_WALLPAPER_LIMIT, enabled)
+                    .apply();
+        }
     }
 }

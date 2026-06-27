@@ -1,4 +1,4 @@
-﻿package com.Axl.subscreenhook.ui
+package com.Axl.subscreenhook.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -44,18 +44,25 @@ private val navItems = listOf(
 @Composable
 internal fun HomeScreen(
     disableLongPress: Boolean,
+    removeWallpaperLimit: Boolean,
     serviceAvailable: Boolean,
     floatingNavBar: Boolean,
     onDisableLongPressChange: (Boolean) -> Unit,
+    onRemoveWallpaperLimitChange: (Boolean) -> Unit,
     onFloatingNavBarChange: (Boolean) -> Unit
 ) {
     ApplyStatusBarAppearance()
     var selected by remember { mutableIntStateOf(0) }
     val scrollBehavior = MiuixScrollBehavior(rememberTopAppBarState())
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MiuixTheme.colorScheme.background)
+    ) {
         Scaffold(
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+            containerColor = MiuixTheme.colorScheme.background,
             topBar = {
                 TopAppBar(
                     title = navItems[selected].first,
@@ -93,25 +100,21 @@ internal fun HomeScreen(
                 when (selected) {
                     0 -> HomePage(
                         disableLongPress = disableLongPress,
-                        serviceAvailable = serviceAvailable,
-                        onDisableLongPressChange = onDisableLongPressChange
-                    )
-                    1 -> SettingsPage(
-                        disableLongPress = disableLongPress,
+                        removeWallpaperLimit = removeWallpaperLimit,
                         floatingNavBar = floatingNavBar,
+                        serviceAvailable = serviceAvailable,
+                        onDisableLongPressChange = onDisableLongPressChange,
+                        onRemoveWallpaperLimitChange = onRemoveWallpaperLimitChange,
                         onFloatingNavBarChange = onFloatingNavBarChange
                     )
+                    1 -> SettingsPage()
                     2 -> AboutPage()
                 }
             }
         }
 
         if (floatingNavBar) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Bottom,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+            Box(modifier = Modifier.align(Alignment.BottomCenter)) {
                 FloatingNavigationBar {
                     navItems.forEachIndexed { index, (label, icon) ->
                         FloatingNavigationBarItem(

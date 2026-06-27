@@ -16,7 +16,7 @@ public final class SettingsSyncBridge {
     private SettingsSyncBridge() {
     }
 
-    public static void ensureHookReceiverInstalled(@NonNull Context context) {
+    public static synchronized void ensureHookReceiverInstalled(@NonNull Context context) {
         if (receiverInstalled) {
             return;
         }
@@ -54,8 +54,12 @@ public final class SettingsSyncBridge {
                 return;
             }
             if (intent.hasExtra(Constants.EXTRA_SETTING_VALUE)) {
-                boolean value = intent.getBooleanExtra(Constants.EXTRA_SETTING_VALUE, false);
-                PrefsBridge.applyIncomingSettingForHook(key, value);
+                Object value = intent.getExtras().get(Constants.EXTRA_SETTING_VALUE);
+                if (value instanceof Boolean) {
+                    PrefsBridge.applyIncomingSettingForHook(key, (Boolean) value);
+                } else if (value instanceof Integer) {
+                    PrefsBridge.applyIncomingSettingForHookInt(key, (Integer) value);
+                }
             }
         }
     }

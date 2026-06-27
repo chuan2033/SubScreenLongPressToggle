@@ -1,4 +1,4 @@
-﻿package com.Axl.subscreenhook.ui.components
+package com.Axl.subscreenhook.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -82,10 +82,10 @@ internal fun StatusCard(serviceAvailable: Boolean, moduleVersion: String) {
                 )
             }
             if (frameworkName.isNotBlank()) {
-                InfoRow("框架", frameworkName)
+                SettingsInfoRow("框架", frameworkName)
             }
-            InfoRow("框架版本", frameworkInfo)
-            InfoRow("模块版本", moduleVersion)
+            SettingsInfoRow("框架版本", frameworkInfo)
+            SettingsInfoRow("模块版本", moduleVersion)
         }
     }
 }
