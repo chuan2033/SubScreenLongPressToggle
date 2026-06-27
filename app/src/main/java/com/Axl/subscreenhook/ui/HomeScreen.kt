@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.Axl.subscreenhook.ui.about.AboutPage
 import com.Axl.subscreenhook.ui.home.HomePage
-import com.Axl.subscreenhook.ui.settings.SettingsPage
 import com.Axl.subscreenhook.ui.system.ApplyStatusBarAppearance
 import com.Axl.subscreenhook.ui.theme.HomeUiTokens
 import top.yukonga.miuix.kmp.basic.FloatingNavigationBar
@@ -32,12 +31,10 @@ import top.yukonga.miuix.kmp.basic.rememberTopAppBarState
 import top.yukonga.miuix.kmp.icon.MiuixIcons
 import top.yukonga.miuix.kmp.icon.extended.GridView
 import top.yukonga.miuix.kmp.icon.extended.Info
-import top.yukonga.miuix.kmp.icon.extended.Settings
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 
 private val navItems = listOf(
     "主页" to MiuixIcons.GridView,
-    "配置" to MiuixIcons.Settings,
     "关于" to MiuixIcons.Info
 )
 
@@ -107,8 +104,7 @@ internal fun HomeScreen(
                         onRemoveWallpaperLimitChange = onRemoveWallpaperLimitChange,
                         onFloatingNavBarChange = onFloatingNavBarChange
                     )
-                    1 -> SettingsPage()
-                    2 -> AboutPage()
+                    1 -> AboutPage()
                 }
             }
         }
