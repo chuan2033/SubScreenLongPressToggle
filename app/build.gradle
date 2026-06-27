@@ -22,19 +22,9 @@ android {
         buildConfigField "String", "MIUIX_VERSION", "\"0.9.2\""
     }
 
-    signingConfigs {
-        debug {
-            storeFile file(System.getProperty('user.home') + '/.android/debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-        }
-    }
-
     buildTypes {
         release {
             minifyEnabled false
-            signingConfig signingConfigs.debug
         }
         debug {
             minifyEnabled false

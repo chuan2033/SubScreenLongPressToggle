@@ -18,7 +18,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextOverflow
 import com.Axl.subscreenhook.app.ModuleApp
 import com.Axl.subscreenhook.ui.theme.HomeUiTokens
 import top.yukonga.miuix.kmp.basic.Text
@@ -60,11 +62,11 @@ internal fun StatusCard(serviceAvailable: Boolean, moduleVersion: String) {
     }
 
     CardBlock {
-        Column {
+        Column(modifier = Modifier.padding(vertical = 4.dp)) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(HomeUiTokens.InfoRowHeight)
+                    .height(32.dp)
                     .padding(horizontal = HomeUiTokens.ListHorizontalPadding),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -82,10 +84,29 @@ internal fun StatusCard(serviceAvailable: Boolean, moduleVersion: String) {
                 )
             }
             if (frameworkName.isNotBlank()) {
-                SettingsInfoRow("框架", frameworkName)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(32.dp)
+                        .padding(horizontal = HomeUiTokens.ListHorizontalPadding),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "框架",
+                        color = MiuixTheme.colorScheme.onSurfaceSecondary,
+                        style = MiuixTheme.textStyles.body1,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Text(
+                        text = frameworkName,
+                        color = MiuixTheme.colorScheme.onSurface,
+                        style = MiuixTheme.textStyles.body1,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
-            SettingsInfoRow("框架版本", frameworkInfo)
-            SettingsInfoRow("模块版本", moduleVersion)
+            SettingsInfoRow("框架版本", frameworkInfo, height = 32.dp)
         }
     }
 }

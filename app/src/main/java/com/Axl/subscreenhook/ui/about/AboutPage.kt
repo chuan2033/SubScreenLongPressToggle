@@ -21,9 +21,11 @@ import com.Axl.subscreenhook.BuildConfig
 import com.Axl.subscreenhook.R
 import com.Axl.subscreenhook.ui.components.AboutArrowPreference
 import com.Axl.subscreenhook.ui.components.CardBlock
+import com.Axl.subscreenhook.ui.components.InfoRow
 import com.Axl.subscreenhook.ui.components.SettingsInfoRow
 import com.Axl.subscreenhook.ui.theme.HomeUiTokens
 import com.Axl.subscreenhook.ui.util.currentDeviceName
+import com.Axl.subscreenhook.ui.util.currentHyperOSVersion
 import com.Axl.subscreenhook.ui.util.currentSystemVersion
 import top.yukonga.miuix.kmp.basic.SmallTitle
 import top.yukonga.miuix.kmp.basic.Text
@@ -36,19 +38,23 @@ internal fun AboutPage() {
 
     SmallTitle(text = "开发者", insideMargin = PaddingValues(horizontal = HomeUiTokens.ListHorizontalPadding))
     CardBlock(pressFeedbackType = PressFeedbackType.None) {
-        AboutArrowPreference("AxlQ", "GitHub: chuan2033", "https://github.com/chuan2033")
+        AboutArrowPreference("AxlQ", null, "https://github.com/chuan2033")
     }
 
     SmallTitle(text = "当前系统信息", insideMargin = PaddingValues(horizontal = HomeUiTokens.ListHorizontalPadding))
     CardBlock {
-        SettingsInfoRow("机型", currentDeviceName())
-        SettingsInfoRow("系统版本", currentSystemVersion())
+        InfoRow("机型", currentDeviceName())
+        InfoRow("系统版本", currentHyperOSVersion())
+        InfoRow("安卓版本", currentSystemVersion())
     }
 
-    SmallTitle(text = "关于模块", insideMargin = PaddingValues(horizontal = HomeUiTokens.ListHorizontalPadding))
-    CardBlock {
-        SettingsInfoRow("模块版本", BuildConfig.VERSION_NAME)
-        SettingsInfoRow("API 版本", "Modern Xposed API ${io.github.libxposed.api.XposedInterface.LIB_API}")
+    SmallTitle(text = "项目地址", insideMargin = PaddingValues(horizontal = HomeUiTokens.ListHorizontalPadding))
+    CardBlock(pressFeedbackType = PressFeedbackType.None) {
+        AboutArrowPreference(
+            "SubScreenLongPressToggle",
+            "GitHub",
+            "https://github.com/chuan2033/SubScreenLongPressToggle"
+        )
     }
 
     SmallTitle(text = "引用", insideMargin = PaddingValues(horizontal = HomeUiTokens.ListHorizontalPadding))
@@ -56,17 +62,12 @@ internal fun AboutPage() {
         AboutArrowPreference(
             "本项目使用 Miuix UI 组件构建",
             "miuix-kotlin-multiplatform (Apache-2.0)",
-            "https://github.com/chuan2033/miuix"
+            "https://github.com/compose-miuix-ui/miuix"
         )
         AboutArrowPreference(
             "开源许可",
             "查看依赖与许可证信息",
             "https://github.com/chuan2033/SubScreenLongPressToggle"
-        )
-        AboutArrowPreference(
-            "参考项目",
-            "InstallerX Revived",
-            "https://github.com/wxxsfxyzm/InstallerX-Revived"
         )
     }
 }
@@ -92,7 +93,7 @@ private fun AboutHeader() {
                 painter = painterResource(id = R.drawable.ic_about_logo),
                 contentDescription = "App Icon",
                 modifier = Modifier.size(HomeUiTokens.AboutLogoSize),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Fit
             )
         }
         Spacer(modifier = Modifier.height(HomeUiTokens.AboutHeaderSpacing))

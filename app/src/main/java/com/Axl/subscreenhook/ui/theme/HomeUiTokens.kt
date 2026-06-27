@@ -14,8 +14,8 @@ object HomeUiTokens {
 
     val AboutHeaderTopPadding = 48.dp
     val AboutHeaderBottomPadding = 24.dp
-    val AboutLogoSize = 120.dp
+    val AboutLogoSize = 100.dp
     val AboutLogoCornerRadius = 18.dp
-    val AboutHeaderSpacing = 16.dp
+    val AboutHeaderSpacing = 4.dp
     val AboutVersionSpacing = 4.dp
 }

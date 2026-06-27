@@ -16,6 +16,14 @@ internal fun currentSystemVersion(): String {
     return "Android ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})"
 }
 
+internal fun currentHyperOSVersion(): String {
+    val osName = getSystemProperty("ro.mi.os.version.name")
+    if (!osName.isNullOrBlank()) {
+        return osName
+    }
+    return "MIUI"
+}
+
 private fun getSystemProperty(key: String): String? {
     return try {
         val clazz = Class.forName("android.os.SystemProperties")

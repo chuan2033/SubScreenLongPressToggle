@@ -36,11 +36,11 @@ internal fun InfoRow(label: String, value: String) {
 }
 
 @Composable
-internal fun SettingsInfoRow(label: String, value: String) {
+internal fun SettingsInfoRow(label: String, value: String, height: androidx.compose.ui.unit.Dp = HomeUiTokens.InfoRowHeight) {
     androidx.compose.foundation.layout.Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(HomeUiTokens.InfoRowHeight)
+            .height(height)
             .padding(horizontal = HomeUiTokens.ListHorizontalPadding),
         verticalAlignment = Alignment.CenterVertically
     ) {
